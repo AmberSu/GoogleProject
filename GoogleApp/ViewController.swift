@@ -34,10 +34,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func sendRequest() {
         let configuration = URLSessionConfiguration.default
         let session = URLSession(configuration: configuration, delegate: nil, delegateQueue: OperationQueue.main)
-        let searchWords: String = String(textField.text!)
-        let words = searchWords.split(separator: " ")
-        for word in words {
-            guard let url = URL(string: "https://www.googleapis.com/customsearch/v1?key=AIzaSyCRx1TzMXvZmNn7hllGx_VPMFHFp7vvVD8&cx=015479572664441330661:fcm_kei-4um&q=" + String(word)) else {
+        let searchWords = textField.text!.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        guard let url = URL(string: "https://www.googleapis.com/customsearch/v1?key=AIzaSyCRx1TzMXvZmNn7hllGx_VPMFHFp7vvVD8&cx=015479572664441330661:fcm_kei-4um&q=" + searchWords!) else {
                 return
             }
         var urlRequest = URLRequest(url: url)
@@ -65,7 +63,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             print(self?.resultTitles ?? "Title")
         })
         task.resume()
-        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
